@@ -1,0 +1,348 @@
+@import "tailwindcss";
+
+@theme {
+  --color-porcelain: #F6F4F1;
+  --color-ink: #2E2E32;
+  --color-secondary: #6E6A66;
+  --color-copper: #B87F6E;
+  --color-copper-deep: #8A5A4E;
+  --color-blush: #EAD3CB;
+  --color-highlight: #F2E3DC;
+  --color-cold-grey: #D4D2CF;
+  --font-family-display-ar: "Amiri", serif;
+  --font-family-body-ar: "IBM Plex Sans Arabic", sans-serif;
+  --font-family-display-en: "Bodoni Moda", serif;
+  --font-family-ui-en: "Montserrat", sans-serif;
+  --font-family-mono: "Space Mono", monospace;
+}
+
+:root {
+  --porcelain: #F6F4F1;
+  --ink: #2E2E32;
+  --secondary: #6E6A66;
+  --copper: #B87F6E;
+  --copper-deep: #8A5A4E;
+  --blush: #EAD3CB;
+  --highlight: #F2E3DC;
+  --cold-grey: #D4D2CF;
+  --font-display-ar: "Amiri", serif;
+  --font-body-ar: "IBM Plex Sans Arabic", sans-serif;
+  --font-display-en: "Bodoni Moda", serif;
+  --font-ui-en: "Montserrat", sans-serif;
+  --font-mono: "Space Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body-ar);
+  background-color: var(--porcelain);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+[dir="ltr"] body {
+  font-family: var(--font-ui-en);
+}
+
+/* Custom cursor */
+.custom-cursor {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  mix-blend-mode: difference;
+}
+
+.custom-cursor__crosshair {
+  width: 100%;
+  height: 100%;
+  border: 1.5px solid var(--copper-deep);
+  border-radius: 50%;
+  position: relative;
+}
+
+.custom-cursor__crosshair::before,
+.custom-cursor__crosshair::after {
+  content: '';
+  position: absolute;
+  background: var(--copper-deep);
+}
+
+.custom-cursor__crosshair::before {
+  width: 1px;
+  height: 100%;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.custom-cursor__crosshair::after {
+  width: 100%;
+  height: 1px;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.custom-cursor__dot {
+  width: 4px;
+  height: 4px;
+  background: var(--copper-deep);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.custom-cursor--viewfinder .custom-cursor__crosshair {
+  border-radius: 0;
+  width: 40px;
+  height: 40px;
+  border: none;
+}
+
+.custom-cursor--viewfinder .custom-cursor__crosshair::before,
+.custom-cursor--viewfinder .custom-cursor__crosshair::after {
+  display: none;
+}
+
+.custom-cursor--viewfinder .custom-cursor__dot {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-cursor--ibeam {
+  cursor: text;
+}
+
+/* Circuit divider */
+.circuit-divider {
+  width: 100%;
+  height: 40px;
+  position: relative;
+  overflow: visible;
+}
+
+.circuit-divider svg {
+  width: 100%;
+  height: 100%;
+}
+
+.circuit-line {
+  stroke: var(--copper);
+  stroke-width: 1;
+  fill: none;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 1.5s ease;
+}
+
+.circuit-line.animate {
+  stroke-dashoffset: 0;
+}
+
+.circuit-node {
+  fill: var(--copper);
+  opacity: 0;
+  transition: opacity 0.5s ease 1s;
+}
+
+.circuit-node.animate {
+  opacity: 1;
+}
+
+/* Coin edge strip */
+.coin-edge {
+  height: 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--copper) 0px,
+    var(--copper-deep) 3px,
+    var(--copper) 6px,
+    var(--blush) 9px,
+    var(--copper) 12px
+  );
+}
+
+/* Blueprint background */
+.blueprint-bg {
+  position: relative;
+}
+
+.blueprint-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  background-image:
+    linear-gradient(var(--copper) 1px, transparent 1px),
+    linear-gradient(90deg, var(--copper) 1px, transparent 1px),
+    linear-gradient(var(--copper) 0.5px, transparent 0.5px),
+    linear-gradient(90deg, var(--copper) 0.5px, transparent 0.5px);
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+  pointer-events: none;
+}
+
+/* Code glyphs */
+.code-glyph {
+  font-family: var(--font-mono);
+  font-size: 12rem;
+  color: var(--copper);
+  opacity: 0.06;
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+}
+
+/* Medallion */
+.medallion {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    var(--copper-deep),
+    var(--copper),
+    var(--blush),
+    var(--copper),
+    var(--copper-deep),
+    var(--copper),
+    var(--blush),
+    var(--copper),
+    var(--copper-deep)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.medallion::before {
+  content: '';
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--porcelain);
+  position: absolute;
+}
+
+.medallion--large {
+  width: 80px;
+  height: 80px;
+}
+
+.medallion--large::before {
+  width: 68px;
+  height: 68px;
+}
+
+.medallion__inner {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display-en);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--copper-deep);
+}
+
+.medallion--large .medallion__inner {
+  font-size: 24px;
+}
+
+/* Marquee */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+[dir="rtl"] .marquee-track {
+  animation: marquee 30s linear infinite;
+}
+
+[dir="ltr"] .marquee-track {
+  animation: marquee 30s linear infinite reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none !important;
+  }
+  .circuit-line {
+    transition: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+  .circuit-node {
+    transition: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Ken Burns */
+@keyframes kenburns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+.ken-burns {
+  animation: kenburns 20s ease-in-out infinite alternate;
+}
+
+/* Line mask reveal */
+@keyframes lineMaskReveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+[dir="ltr"] .line-mask-reveal {
+  animation: lineMaskReveal 1s ease forwards;
+}
+
+[dir="rtl"] .line-mask-reveal {
+  animation: lineMaskRevealRTL 1s ease forwards;
+}
+
+@keyframes lineMaskRevealRTL {
+  from { clip-path: inset(0 0 0 100%); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+/* WhatsApp pulse */
+@keyframes waPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(184, 127, 110, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(184, 127, 110, 0); }
+}
+
+.wa-pulse {
+  animation: waPulse 2s ease-in-out infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--porcelain);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--copper);
+  border-radius: 3px;
+}
+
+/* Selection */
+::selection {
+  background: var(--blush);
+  color: var(--ink);
+}
